@@ -1,0 +1,84 @@
+﻿@section Scripts{
+
+
+    <script type="text/javascript" src="~/lib/contacts.js"></script>  <link type="text/css" rel="stylesheet" href="/Scripts/jsgrid.min.css" />
+    <link type="text/css" rel="stylesheet" href="/scripts/jsgrid-theme.min.css" />
+
+    <script type="text/javascript" src="/scripts/jsgrid.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        var serviceURL = '/api/Values';
+
+        $.ajax({
+        type: "GET",
+        url: serviceURL,
+        //data: param = "",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: successFunc,
+        error: errorFunc
+        });
+
+        function successFunc(data, status) {
+           // alert(data);
+            var gitstuff;
+            if (data != null) {
+                gitstuff = JSON.parse(data);
+            }
+            else { gitstuff = [];}
+            
+            $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "400px",
+
+                inserting: false,
+                editing: false,
+                sorting: true,
+                paging: true,
+
+                data: gitstuff,
+
+                fields: [
+                  
+                    { name: "Id", type:"number" },
+                    { name: "FullName", type: "text", width: 100 },
+                    { name: "Description", type: "text", width: 150 },
+                    { name: "GitUrl", type: "URL", width: 200  },
+                    { name: "ForksCount", type: "number" },
+                    { type: "control" }
+                ]
+
+            });
+        }
+
+        function errorFunc() {
+        alert('no data');
+        }
+            });
+
+    </script>
+
+}
+
+
+<div class="jumbotron">
+    <h2>Linus, Linux and Git</h2>
+    <p class="lead"><b>Fun fact:</b> Linus Torvalds wrote 90,000 lines of Git using microEMACs. See below for the link to his customized version.</p>
+    <p><a href="https://github.com/torvalds/linux" class="btn btn-primary btn-lg">Go to the Linux Kernel Git source tree &raquo;</a></p>
+</div>
+<div class="row">
+    <div class="col-md-2"> 
+        <p>
+            <div> <img src="https://avatars0.githubusercontent.com/u/1024025?v=4" alt="Linuxs" width="150" /></div>
+            <br />
+            Linux and GIT owe much to Linus Tovalds.
+        </p>
+        <p><a class="btn btn-default"  href="https://en.wikipedia.org/wiki/Linus_Torvalds"> Wikipedia Article &raquo;</a></p>
+    </div>
+    <div class="col-md-10">
+        <h3> Current Projects on GitHub </h3>
+        <div id="jsGrid"></div>
+
+    </div>
+
+</div>
